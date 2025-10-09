@@ -34,14 +34,15 @@ public class VideoDownloaderService {
         }
     }
 
-    public void downloadVideo(String videoId) {
+    public void downloadVideo(String videoId, String nameAfterDownload) {
         try {
             VideoInfo video = getVideoInfo(videoId);
-            File outputDir = new File("my_videos");
+            File outputDir = new File("backend/my_videos");
             Format format = video.videoFormats().get(0);
 
             RequestVideoFileDownload request = new RequestVideoFileDownload(format)
-                .saveTo(outputDir);
+                .saveTo(outputDir)
+                .renameTo(nameAfterDownload);
             
             downloader.downloadVideoFile(request);
         } catch (Exception e) {
