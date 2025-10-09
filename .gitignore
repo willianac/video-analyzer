@@ -48,7 +48,7 @@ target/
 .mvn/wrapper/maven-wrapper.jar
 !**/backend/src/main/**/target/
 !**/backend/src/test/**/target/
-backend/my_videos/*.mp4
+backend/my_videos/
 backend/src/main/resources/application.properties
 
 ### STS ###
