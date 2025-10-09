@@ -70,6 +70,21 @@
 			<artifactId>java-youtube-downloader</artifactId>
 			<version>3.3.1</version>
 		</dependency>
+		<dependency>
+			<groupId>com.google.genai</groupId>
+			<artifactId>google-genai</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>ffmpeg-platform-gpl</artifactId>
+            <version>7.1.1-1.5.12</version>
+        </dependency>
+		<dependency>
+			<groupId>org.bytedeco</groupId>
+			<artifactId>javacv-platform</artifactId>
+			<version>1.5.12</version> <!-- use latest -->
+		</dependency>
 	</dependencies>
 
 	<build>
