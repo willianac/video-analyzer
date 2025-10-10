@@ -1,9 +1,5 @@
 package com.willianac.video_analyzer.controllers;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,25 +36,13 @@ public class VideoInfoController {
         return ResponseEntity.ok(details.title());
     }
 
-    @GetMapping("/download")
+    @GetMapping("/summary")
     public ResponseEntity<?> downloadVideo(@RequestParam String videoId) {
         try {
-            youtubeVideoSummarizer.summarizeVideo(videoId);
-            return ResponseEntity.ok("Video download and processing completed.");
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error: " + e.getMessage());
-        }
-    }
-
-    @GetMapping("/transcription")
-    public ResponseEntity<?> transcription() {
-        try {
-            Path file = Paths.get("").toAbsolutePath().resolve("backend/my_videos/25b2d357-f4eb-455c-b81e-1e1a33a59b7a.mp3");
-            byte[] audioData = Files.readAllBytes(file);
-            String result = googleGeminiService.transcribeAudio(audioData);
+            String result = youtubeVideoSummarizer.summarizeVideo(videoId);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error in audio transcription");
+            return ResponseEntity.status(500).body("Error: " + e.getMessage());
         }
     }
 }

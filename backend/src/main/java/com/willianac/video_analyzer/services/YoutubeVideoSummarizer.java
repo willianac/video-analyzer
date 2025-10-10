@@ -1,5 +1,6 @@
 package com.willianac.video_analyzer.services;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
@@ -13,8 +14,10 @@ public class YoutubeVideoSummarizer {
     private VideoDownloaderService videoDownloaderService;
     @Autowired
     private AudioExtractorService audioExtractorService;
+    @Autowired
+    private GoogleGeminiService googleGeminiService;
 
-    public void summarizeVideo(String videoId) {
+    public String summarizeVideo(String videoId) {
         try {
             UUID uuid = UUID.randomUUID();
             videoDownloaderService.downloadVideo(videoId, uuid.toString());
@@ -23,6 +26,10 @@ public class YoutubeVideoSummarizer {
             Path outputPath = Paths.get("").toAbsolutePath().resolve("backend/my_videos/" + uuid.toString() + ".mp3");
 
             audioExtractorService.extractAudio(inputPath.toString(), outputPath.toString());
+
+            byte[] audioData = Files.readAllBytes(outputPath);
+            String summary = googleGeminiService.transcribeAudio(audioData);
+            return summary;
 
         } catch (Exception e) {
             System.out.println("Error in summarizeVideo: " + e.getMessage());
