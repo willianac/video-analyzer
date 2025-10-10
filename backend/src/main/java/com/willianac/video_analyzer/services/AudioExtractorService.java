@@ -21,8 +21,8 @@ public class AudioExtractorService {
 
             FFmpegFrameRecorder frameRecorder = new FFmpegFrameRecorder(audioPath, audioChannels);
             frameRecorder.setSampleRate(frameGrabber.getSampleRate());
-            frameRecorder.setAudioCodec(avcodec.AV_CODEC_ID_PCM_S16LE); // WAV format
-            frameRecorder.setFormat("wav");
+            frameRecorder.setAudioCodec(avcodec.AV_CODEC_ID_MP3); // mp3 format
+            frameRecorder.setFormat("mp3");
             frameRecorder.start();
 
             Frame frame;

@@ -35,6 +35,17 @@
 		    <url>https://jitpack.io</url>
 		</repository>
 	</repositories>
+	<dependencyManagement>
+	<dependencies>
+		<dependency>
+		<groupId>com.google.cloud</groupId>
+		<artifactId>libraries-bom</artifactId>
+		<version>26.65.0</version>
+		<type>pom</type>
+		<scope>import</scope>
+		</dependency>
+	</dependencies>
+	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -71,11 +82,6 @@
 			<version>3.3.1</version>
 		</dependency>
 		<dependency>
-			<groupId>com.google.genai</groupId>
-			<artifactId>google-genai</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-		<dependency>
             <groupId>org.bytedeco</groupId>
             <artifactId>ffmpeg-platform-gpl</artifactId>
             <version>7.1.1-1.5.12</version>
@@ -84,6 +90,10 @@
 			<groupId>org.bytedeco</groupId>
 			<artifactId>javacv-platform</artifactId>
 			<version>1.5.12</version> <!-- use latest -->
+		</dependency>
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-speech</artifactId>
 		</dependency>
 	</dependencies>
 

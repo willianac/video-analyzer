@@ -20,7 +20,7 @@ public class YoutubeVideoSummarizer {
             videoDownloaderService.downloadVideo(videoId, uuid.toString());
 
             Path inputPath = Paths.get("").toAbsolutePath().resolve("backend/my_videos/" + uuid.toString() + ".mp4");
-            Path outputPath = Paths.get("").toAbsolutePath().resolve("backend/my_videos/" + uuid.toString() + ".wav");
+            Path outputPath = Paths.get("").toAbsolutePath().resolve("backend/my_videos/" + uuid.toString() + ".mp3");
 
             audioExtractorService.extractAudio(inputPath.toString(), outputPath.toString());
 
