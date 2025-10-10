@@ -28,9 +28,12 @@ public class YoutubeVideoSummarizer {
             audioExtractorService.extractAudio(inputPath.toString(), outputPath.toString());
 
             byte[] audioData = Files.readAllBytes(outputPath);
-            String summary = googleGeminiService.transcribeAudio(audioData);
+            String textFromAudio = googleGeminiService.transcribeAudio(audioData);
+            String summary = googleGeminiService.summarize(
+                textFromAudio, 
+                "Gere um resumo de no máximo 3 linhas, em texto corrido, sobre o texto a seguir retirado de um vídeo:"
+            );
             return summary;
-
         } catch (Exception e) {
             System.out.println("Error in summarizeVideo: " + e.getMessage());
             throw new RuntimeException("Failed to summarize video for video ID: " + videoId, e);

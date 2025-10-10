@@ -1,5 +1,6 @@
 package com.willianac.video_analyzer.services;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.google.cloud.speech.v1.RecognitionAudio;
@@ -8,10 +9,18 @@ import com.google.cloud.speech.v1.RecognizeResponse;
 import com.google.cloud.speech.v1.SpeechClient;
 import com.google.cloud.speech.v1.SpeechRecognitionAlternative;
 import com.google.cloud.speech.v1.SpeechRecognitionResult;
+import com.google.genai.Client;
+import com.google.genai.types.GenerateContentResponse;
 import com.google.protobuf.ByteString;
+
+import jakarta.annotation.PostConstruct;
 
 @Service
 public class GoogleGeminiService {
+    @Value("${google.gemini.apikey}")
+    private String apiKey;
+
+    private Client geminiClient;
 
     public String transcribeAudio(byte[] audioData) throws Exception {
         try (SpeechClient speechClient = SpeechClient.create()) {
@@ -32,5 +41,20 @@ public class GoogleGeminiService {
             System.out.println("GOT ERROR: " + e.getMessage());
             throw new Exception("Error during transcription: " + e.getMessage());
         }
+    }
+
+    @PostConstruct
+    public void init() {
+        geminiClient = Client.builder().apiKey(apiKey).build();
+    }
+
+    public String summarize(String text, String prompt) {
+        GenerateContentResponse response = geminiClient.models.generateContent(
+                "gemini-2.5-flash", // Replace with the appropriate model name
+                prompt + "\n\n" + text,
+                null
+        );
+        System.out.println("Summary: " + response.text());
+        return response.text();
     }
 }
