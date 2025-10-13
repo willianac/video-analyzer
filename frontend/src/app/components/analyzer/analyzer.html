@@ -1,0 +1,47 @@
+<div class="glass-box main">
+  <h1>Olá Willian</h1>
+  <h3>Insira a URL inteira de um vídeo do youtube ou só o id para conseguir o resumo desse video</h3>
+  <h3 class="examples-label">Exemplos:</h3>
+  <div class="info">
+    <div class="examples">
+      <div>
+        <strong><small>Com URL: </small></strong>
+        <small>youtube.com/watch?v=Lubx6K2vV4I&list=RDLubx6K2vV4I&start_radio=1</small>
+      </div>
+      <div>
+        <strong><small>Com ID: </small></strong>
+        <small>Lubx6K2vV4I</small>
+      </div>
+    </div>
+    <div class="limitations">
+      <strong>*Suporta vídeos de até 1 minuto</strong>
+    </div>
+  </div>
+  <div class="input">
+    <input nz-input placeholder="Cole aqui o vídeo link ou ID" type="text" nzVariant="underlined"/>
+    <div class="actions">
+      <button nz-button nzType="primary" nzGhost="" nzShape="round" nzSize="large" [disabled]="loading">Voltar</button>
+      <button nz-button nzType="primary" nzShape="round" nzSize="large" [nzLoading]="loading" (click)="wait()">Gerar resumo</button>
+    </div>
+  </div>
+  @if (this.summary) {
+    <div class="result glass-box" @show>
+      <p class="header">
+        No rush They say that I'm on a roll
+        Maybe I just lost control
+        These nights keep on taking tolls
+        Find me out here on my own
+        But I mend up with you home
+        You keep picking up the bone
+        Still I keep colder than stone
+        Till you blowing up my phone
+        Keeping with sexual tone
+        When I wana leave alone
+        Till you blowing up my phone
+        Keeping with sexual tone
+        When I wana leave alone
+        (Yeah)
+      </p>
+    </div>
+  }
+</div>
