@@ -1,11 +1,16 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
 .intro {
-  width: fit-content;
-  margin: auto;
-  margin-top: 10rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 2rem;
+  width: 540px;
 }
 
 .credits {
