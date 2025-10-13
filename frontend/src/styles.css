@@ -8,6 +8,12 @@
     text-decoration: none;
 }
 
+body {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
 .glass-box {
     background: rgba(255, 255, 255, 0.23);
     border-radius: 16px;
