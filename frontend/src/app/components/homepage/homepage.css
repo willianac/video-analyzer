@@ -13,6 +13,18 @@
   width: 540px;
 }
 
+.welcome {
+  margin-bottom: 0.2rem;
+}
+
+.details {
+  margin-bottom: 2rem;
+}
+
+button {
+  width: 100%;
+}
+
 .credits {
   display: flex;
   justify-content: center;
