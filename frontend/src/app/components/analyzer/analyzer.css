@@ -25,6 +25,6 @@
   column-gap: 8px;
 }
 
-.result {
+.result, .summary-error {
   padding: 1rem;
 }
