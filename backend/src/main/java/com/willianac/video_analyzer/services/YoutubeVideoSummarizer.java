@@ -17,7 +17,7 @@ public class YoutubeVideoSummarizer {
     @Autowired
     private GoogleGeminiService googleGeminiService;
 
-    public String summarizeVideo(String videoId) {
+    public String summarizeVideo(String videoId) throws Exception {
         try {
             UUID uuid = UUID.randomUUID();
             videoDownloaderService.downloadVideo(videoId, uuid.toString());
@@ -36,7 +36,7 @@ public class YoutubeVideoSummarizer {
             return summary;
         } catch (Exception e) {
             System.out.println("Error in summarizeVideo: " + e.getMessage());
-            throw new RuntimeException("Failed to summarize video for video ID: " + videoId, e);
+            throw e;
         }
     }
 }

@@ -6,6 +6,9 @@ import org.bytedeco.javacv.FFmpegFrameRecorder;
 import org.bytedeco.javacv.Frame;
 import org.springframework.stereotype.Service;
 
+import com.willianac.video_analyzer.exceptions.SummaryErrorsEnum;
+import com.willianac.video_analyzer.exceptions.SummaryException;
+
 @Service
 public class AudioExtractorService {
     public void extractAudio(String videoPath, String audioPath) throws Exception {
@@ -35,7 +38,7 @@ public class AudioExtractorService {
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            throw new Exception("Error extracting audio: " + e.getMessage());
+            throw new SummaryException(SummaryErrorsEnum.EXTRACT_AUDIO_FAILED);
         }
     }
 }

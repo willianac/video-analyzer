@@ -11,6 +11,8 @@ import com.github.kiulian.downloader.downloader.client.ClientType;
 import com.github.kiulian.downloader.downloader.response.Response;
 import com.github.kiulian.downloader.model.videos.VideoInfo;
 import com.github.kiulian.downloader.model.videos.formats.Format;
+import com.willianac.video_analyzer.exceptions.SummaryErrorsEnum;
+import com.willianac.video_analyzer.exceptions.SummaryException;
 
 @Service
 public class VideoDownloaderService {
@@ -25,18 +27,24 @@ public class VideoDownloaderService {
             if (!response.ok() || response.data() == null) {
                 System.out.println("Here is the error:");
                 System.out.println(response.error());
-                throw new RuntimeException("Failed to fetch video info. Response not OK.");
+                throw new SummaryException(SummaryErrorsEnum.GET_VIDEO_INFO_FAILED);
             }
 
             return response.data();
         } catch (Exception e) {
-            throw new RuntimeException("Failed to get video info for video ID: " + videoId, e);
+            throw new RuntimeException(e);
         }
     }
 
     public void downloadVideo(String videoId, String nameAfterDownload) {
         try {
             VideoInfo video = getVideoInfo(videoId);
+
+            int maxDurationSeconds = 60;
+            if(video.details().lengthSeconds() > maxDurationSeconds) {
+                throw new SummaryException(SummaryErrorsEnum.VIDEO_TOO_LONG);
+            }
+
             File outputDir = new File("backend/my_videos");
             Format format = video.videoFormats().get(0);
 
@@ -46,7 +54,10 @@ public class VideoDownloaderService {
             
             downloader.downloadVideoFile(request);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to download video for video ID: " + videoId, e);
+            if (e instanceof SummaryException) {
+                throw e;
+            }
+            throw new SummaryException(SummaryErrorsEnum.DOWNLOAD_FAILED);
         }
     }
 }

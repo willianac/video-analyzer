@@ -12,6 +12,8 @@ import com.google.cloud.speech.v1.SpeechRecognitionResult;
 import com.google.genai.Client;
 import com.google.genai.types.GenerateContentResponse;
 import com.google.protobuf.ByteString;
+import com.willianac.video_analyzer.exceptions.SummaryErrorsEnum;
+import com.willianac.video_analyzer.exceptions.SummaryException;
 
 import jakarta.annotation.PostConstruct;
 
@@ -39,7 +41,7 @@ public class GoogleGeminiService {
             return alternative.getTranscript();
         } catch (Exception e) {
             System.out.println("GOT ERROR: " + e.getMessage());
-            throw new Exception("Error during transcription: " + e.getMessage());
+            throw new SummaryException(SummaryErrorsEnum.TRANSCRIPTION_FAILED);
         }
     }
 
@@ -48,13 +50,17 @@ public class GoogleGeminiService {
         geminiClient = Client.builder().apiKey(apiKey).build();
     }
 
-    public String summarize(String text, String prompt) {
-        GenerateContentResponse response = geminiClient.models.generateContent(
+    public String summarize(String text, String prompt) throws Exception {
+        try {
+            GenerateContentResponse response = geminiClient.models.generateContent(
                 "gemini-2.5-flash", // Replace with the appropriate model name
                 prompt + "\n\n" + text,
                 null
-        );
-        System.out.println("Summary: " + response.text());
-        return response.text();
+            );
+            System.out.println("Summary: " + response.text());
+            return response.text();
+        } catch (Exception e) {
+            throw new SummaryException(SummaryErrorsEnum.SUMMARY_FAILED);
+        }
     }
 }
