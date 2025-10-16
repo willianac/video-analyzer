@@ -6,6 +6,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { Summary } from '../../services/summary';
 import { FormsModule } from '@angular/forms';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { Session } from '../../services/session';
 
 @Component({
   selector: 'app-analyzer',
@@ -19,20 +20,23 @@ import { NzAlertModule } from 'ng-zorro-antd/alert';
   ]
 })
 export class Analyzer {
-  summaryService = inject(Summary)
-  loading = false
-  videoId = ""
-  summary = ""
+  summaryService = inject(Summary);
+  sessionService = inject(Session);
+  currentUser = this.sessionService.getCurrentUser();
+  loading = false;
+  videoId = "";
+  summary = "";
   summaryRequestErr = "";
-  showBlankInputErr = false
+  showBlankInputErr = false;
 
   public getSummary() {
     if(!this.videoId) {
       return this.showBlankInputErr = true;
     }
     this.loading = true
+    this.showBlankInputErr = false;
     
-    return this.summaryService.getSummary(this.videoId).subscribe({
+    return this.summaryService.getSummary(this.videoId, this.currentUser.id).subscribe({
       next: (res) => {
         console.log(res)
         this.summary = res

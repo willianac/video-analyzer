@@ -6,11 +6,12 @@ import { Observable, timeout } from 'rxjs';
   providedIn: 'root'
 })
 export class Summary {
-  http = inject(HttpClient)
-  url = "http://localhost:8080/video-info/summary?videoId="
+  private http = inject(HttpClient)
+  
 
-  public getSummary(videoId: string): Observable<string> {
-    return this.http.get(this.url + videoId, { responseType: "text" }).pipe(
+  public getSummary(videoId: string, userId: number): Observable<string> {
+    const url = `http://localhost:8080/video-info/summary?videoId=${videoId}&userId=${userId}`;
+    return this.http.get(url, { responseType: "text" }).pipe(
       timeout(50000)
     )
   }
