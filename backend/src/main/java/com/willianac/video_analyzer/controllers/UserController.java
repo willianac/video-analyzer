@@ -3,7 +3,6 @@ package com.willianac.video_analyzer.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,31 +22,18 @@ public class UserController {
         return "User endpoint is working!";
     }
 
-    @GetMapping("/all") 
-    public ResponseEntity<?> getAllUsers() {
-        try {
-            return ResponseEntity.ok(userRepository.findAll());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error retrieving users: " + e.getMessage());
-        }
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getUserById(@PathVariable Long id) {
-        try {
-            return userRepository.findById(id)
-                    .map(user -> ResponseEntity.ok(user))
-                    .orElse(null);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error retrieving user: " + e.getMessage());
-        }
-    }
-
     @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody User user) {
+    public ResponseEntity<?> signIn(@RequestBody User user) {
         try {
-            userRepository.save(user);
-            return ResponseEntity.ok("User created successfully");
+            Iterable<User> users = userRepository.findAll();
+            for (User existingUser : users) {
+                if (existingUser.getName().equals(user.getName())) {
+                    return ResponseEntity.ok(existingUser);
+                }
+            }
+            User savedUser = userRepository.save(user);
+            
+            return ResponseEntity.ok(savedUser);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error creating user: " + e.getMessage());
         }
