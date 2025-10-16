@@ -2,6 +2,7 @@ package com.willianac.video_analyzer.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +23,8 @@ public class UserController {
         return "User endpoint is working!";
     }
 
-    @PostMapping
+    @CrossOrigin(origins = "*")
+    @PostMapping("/signin")
     public ResponseEntity<?> signIn(@RequestBody User user) {
         try {
             Iterable<User> users = userRepository.findAll();
