@@ -25,4 +25,8 @@ export class Session {
     public getCurrentUser(): User {
         return JSON.parse(this.get("user") || "{}");
     }
+
+    public getLastVideoSummarized(): string {
+        return this.get("lastVideoSummarized") || "";
+    }
 }

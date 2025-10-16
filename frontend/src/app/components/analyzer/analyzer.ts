@@ -27,20 +27,26 @@ export class Analyzer {
   videoId = "";
   summary = "";
   summaryRequestErr = "";
+  sameSummaryRequestErr = "";
   showBlankInputErr = false;
 
   public getSummary() {
     if(!this.videoId) {
       return this.showBlankInputErr = true;
     }
+    if(this.sessionService.get("lastVideoSummarized") === this.videoId) {
+      this.loading = false;
+      return this.sameSummaryRequestErr = "Você já pediu o resumo desse vídeo. Por favor, insira outro vídeo."
+    }
+
     this.loading = true
     this.showBlankInputErr = false;
-    
+
     return this.summaryService.getSummary(this.videoId, this.currentUser.id).subscribe({
       next: (res) => {
-        console.log(res)
         this.summary = res
         this.loading = false;
+        this.sessionService.set("lastVideoSummarized", this.videoId);
       },
       error: (err) => {
         this.loading = false;

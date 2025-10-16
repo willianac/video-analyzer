@@ -39,4 +39,10 @@
       <p style="color: red">{{summaryRequestErr}}</p>
     </div>
   }
+
+  @if (this.sameSummaryRequestErr) {
+    <div class="summary-error glass-box">
+      <p style="color: red">{{sameSummaryRequestErr}}</p>
+    </div>
+  }
 </div>
