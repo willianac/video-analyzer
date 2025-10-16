@@ -4,5 +4,11 @@
   @if (blankNameError) {
     <small style="color: red;">Por favor, digite seu nome primeiro</small>
   }
-  <button nz-button nzShape="round" nzType="primary" (click)="continue()">Continuar</button>
+  <button [nzLoading]="loading" nz-button nzShape="round" nzType="primary" (click)="continue()">Continuar</button>
+
+  @if(authError) {
+    <p style="color: red; margin-top: 10px;">
+      Ocorreu um erro ao tentar autenticar. Por favor, tente novamente mais tarde.
+    </p>
+  }
 </div>

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { fadeIn } from '@ngverse/motion/animatecss';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { Auth } from '../../../services/auth';
 
 @Component({
   selector: 'app-name',
@@ -18,12 +19,32 @@ import { NzInputModule } from 'ng-zorro-antd/input';
   ]
 })
 export class Name {
-  router = inject(Router)
+  router = inject(Router);
+  authService = inject(Auth);
   name = "";
   blankNameError = false;
+  authError = false;
+  loading = false;
 
   public continue() {
     if(!this.name) return this.blankNameError = true
-    return this.router.navigateByUrl("/analyzer")
+
+    this.loading = true;
+
+    return this.authService.signIn(this.name).subscribe({
+      next: () => this.proceed(),
+      error: (err) => this.handleError(err),
+      complete: () => this.loading = false
+    })
+  }
+
+  private handleError(err: any) {
+    this.authError = true;
+    this.loading = false;
+    console.error(err);
+  }
+
+  private proceed() {
+    this.router.navigateByUrl("/analyzer");
   }
 }
