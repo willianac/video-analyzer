@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.kiulian.downloader.model.videos.VideoDetails;
 import com.github.kiulian.downloader.model.videos.VideoInfo;
+import com.willianac.video_analyzer.model.SummaryRequest;
+import com.willianac.video_analyzer.model.User;
+import com.willianac.video_analyzer.repository.SummaryRequestRepository;
+import com.willianac.video_analyzer.repository.UserRepository;
 import com.willianac.video_analyzer.services.GoogleGeminiService;
 import com.willianac.video_analyzer.services.VideoDownloaderService;
 import com.willianac.video_analyzer.services.YoutubeVideoSummarizer;
@@ -26,6 +30,12 @@ public class VideoInfoController {
     @Autowired
     public GoogleGeminiService googleGeminiService;
 
+    @Autowired
+    public SummaryRequestRepository summaryRequestRepository;
+
+    @Autowired
+    public UserRepository userRepository;
+
     @GetMapping
     public ResponseEntity<?> getVideoInfo(@RequestParam String videoId) {
         VideoInfo result = videoDownloaderService.getVideoInfo(videoId);
@@ -39,9 +49,19 @@ public class VideoInfoController {
 
     @CrossOrigin(origins = "*")
     @GetMapping("/summary")
-    public ResponseEntity<?> downloadVideo(@RequestParam String videoId) {
+    public ResponseEntity<?> downloadVideo(@RequestParam String videoId, @RequestParam Long userId) {
+        if(videoId == null || videoId.isBlank() || userId == null) {
+            return ResponseEntity.badRequest().body("videoId and userId are required");
+        }
+
         try {
             String result = youtubeVideoSummarizer.summarizeVideo(videoId);
+            User user = userRepository.findById(userId).orElse(null);
+            SummaryRequest summaryRequest = new SummaryRequest();
+            summaryRequest.setVideoId(videoId);
+            summaryRequest.setSummary(result); 
+            summaryRequest.setUser(user);
+            summaryRequestRepository.save(summaryRequest);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error: " + e.getMessage());
