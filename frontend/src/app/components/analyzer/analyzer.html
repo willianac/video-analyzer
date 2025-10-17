@@ -45,4 +45,9 @@
       <p style="color: red">{{sameSummaryRequestErr}}</p>
     </div>
   }
-</div>
+
+  @if (this.invalidVideoIdErr) {
+    <div class="summary-error glass-box">
+      <p style="color: red">{{invalidVideoIdErr}}</p>
+    </div>
+  }

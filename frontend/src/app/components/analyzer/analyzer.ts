@@ -26,11 +26,19 @@ export class Analyzer {
   loading = false;
   videoId = "";
   summary = "";
+
   summaryRequestErr = "";
   sameSummaryRequestErr = "";
+  invalidVideoIdErr = "";
+
   showBlankInputErr = false;
 
   public getSummary() {
+    this.showBlankInputErr = false;
+    this.sameSummaryRequestErr = "";
+    this.invalidVideoIdErr = "";
+    this.summaryRequestErr = "";
+
     if(!this.videoId) {
       return this.showBlankInputErr = true;
     }
@@ -38,9 +46,13 @@ export class Analyzer {
       this.loading = false;
       return this.sameSummaryRequestErr = "Você já pediu o resumo desse vídeo. Por favor, insira outro vídeo."
     }
+    
+    if(!this.validateVideoId(this.videoId)) {
+      this.loading = false;
+      return this.invalidVideoIdErr = "ID/URL de vídeo inválido. Por favor, insira um ID ou URL de vídeo do YouTube válido."
+    }
 
     this.loading = true
-    this.showBlankInputErr = false;
 
     return this.summaryService.getSummary(this.videoId, this.currentUser.id).subscribe({
       next: (res) => {
@@ -53,6 +65,11 @@ export class Analyzer {
         this.handleErrors(err)
       }
     })
+  }
+
+  private validateVideoId(videoId: string) {
+    const videoIdRegex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=)?([a-zA-Z0-9_-]{11})$/;
+    return videoIdRegex.test(videoId);
   }
 
   private handleErrors(err: any) {
