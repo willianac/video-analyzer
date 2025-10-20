@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.rpc.context.AttributeContext.Response;
@@ -43,8 +44,8 @@ public class UserController {
     }
 
     @CrossOrigin(origins = "*")
-    @PostMapping("/summaries")
-    public ResponseEntity<?> getUserSummaries(@RequestBody Long userId, @RequestBody String videoId) {
+    @GetMapping("/summaries")
+    public ResponseEntity<?> getUserSummaries(@RequestParam Long userId, @RequestParam String videoId) {
         try {
             User user = userRepository.findById(userId).orElse(null);
             if (user == null) {
