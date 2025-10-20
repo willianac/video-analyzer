@@ -42,6 +42,8 @@ public class UserController {
         }
     }
 
+    @CrossOrigin(origins = "*")
+    @PostMapping("/summaries")
     public ResponseEntity<?> getUserSummaries(@RequestBody Long userId, @RequestBody String videoId) {
         try {
             User user = userRepository.findById(userId).orElse(null);
