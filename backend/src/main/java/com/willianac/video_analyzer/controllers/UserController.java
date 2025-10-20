@@ -1,5 +1,7 @@
 package com.willianac.video_analyzer.controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,11 +30,9 @@ public class UserController {
     @PostMapping("/signin")
     public ResponseEntity<?> signIn(@RequestBody User user) {
         try {
-            Iterable<User> users = userRepository.findAll();
-            for (User existingUser : users) {
-                if (existingUser.getName().equals(user.getName())) {
-                    return ResponseEntity.ok(existingUser);
-                }
+            Optional<User> existingUser = userRepository.findByName(user.getName());
+            if (existingUser.isPresent()) {
+                return ResponseEntity.ok(existingUser.get());
             }
             User savedUser = userRepository.save(user);
             
