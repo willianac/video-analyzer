@@ -24,7 +24,7 @@ export class Analyzer {
   sessionService = inject(Session);
   currentUser = this.sessionService.getCurrentUser();
   loading = false;
-  videoId = "";
+  videoString = "";
   summary = "";
 
   summaryRequestErr = "";
@@ -39,26 +39,29 @@ export class Analyzer {
     this.invalidVideoIdErr = "";
     this.summaryRequestErr = "";
 
-    if(!this.videoId) {
+    const videoId = this.testAndReturnVideoId(this.videoString);
+
+    if(!this.videoString) {
       return this.showBlankInputErr = true;
     }
-    if(this.sessionService.get("lastVideoSummarized") === this.videoId) {
-      this.loading = false;
-      return this.sameSummaryRequestErr = "Você já pediu o resumo desse vídeo. Por favor, insira outro vídeo."
-    }
-    
-    if(!this.validateVideoId(this.videoId)) {
+
+    if(!videoId) {
       this.loading = false;
       return this.invalidVideoIdErr = "ID/URL de vídeo inválido. Por favor, insira um ID ou URL de vídeo do YouTube válido."
     }
 
+    if(this.sessionService.get("lastVideoSummarized") === videoId) {
+      this.loading = false;
+      return this.sameSummaryRequestErr = "Você já pediu o resumo desse vídeo. Por favor, insira outro vídeo."
+    }
+
     this.loading = true
 
-    return this.summaryService.getSummary(this.videoId, this.currentUser.id).subscribe({
+    return this.summaryService.getSummary(videoId, this.currentUser.id).subscribe({
       next: (res) => {
         this.summary = res
         this.loading = false;
-        this.sessionService.set("lastVideoSummarized", this.videoId);
+        this.sessionService.set("lastVideoSummarized", this.videoString);
       },
       error: (err) => {
         this.loading = false;
@@ -67,9 +70,13 @@ export class Analyzer {
     })
   }
 
-  private validateVideoId(videoId: string) {
+  private testAndReturnVideoId(videoString: string) {
     const videoIdRegex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=)?([a-zA-Z0-9_-]{11})$/;
-    return videoIdRegex.test(videoId);
+    const match = videoString.match(videoIdRegex);
+    if(match) {
+      return match[1];
+    }
+    return false;
   }
 
   private handleErrors(err: any) {
