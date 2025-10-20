@@ -20,3 +20,9 @@
   position: relative;
   top: 16rem;
 }
+
+@media screen and (max-width: 768px) {
+  .main {
+    top: 1rem;
+  }
+}

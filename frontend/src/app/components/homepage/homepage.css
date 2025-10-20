@@ -33,3 +33,24 @@ button {
   font-size: 14px;
   font-weight: 300;
 }
+
+@media screen and (max-width: 768px) {
+  .intro {
+    width: 95%;
+    height: 95vh;
+  }
+
+  .welcome {
+    text-align: center;
+    font-size: 40px;
+  }
+
+  .action {
+    margin-top: auto;
+    height: 40px;
+  }
+
+  .credits {
+    margin-top: 0.8rem;
+  }
+}
