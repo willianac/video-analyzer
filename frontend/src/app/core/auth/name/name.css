@@ -6,3 +6,24 @@
   row-gap: 0.6rem;
   margin: auto;
 }
+
+@media screen and (max-width: 768px) {
+  .input-box {
+    width: 95%;
+    height: 95vh;
+  }
+
+  input {
+    height: 40px;
+    font-size: 16px;
+  }
+  
+  .header {
+    font-size: 26px;
+    margin-bottom: 2rem;
+  }
+  .action {
+    margin-top: auto;
+    height: 40px;
+  }
+}
