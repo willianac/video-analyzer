@@ -7,10 +7,11 @@ import { Summary } from '../../services/summary';
 import { FormsModule } from '@angular/forms';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { Session } from '../../services/session';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-analyzer',
-  imports: [NzInputModule, NzButtonModule, FormsModule, NzAlertModule],
+  imports: [NzInputModule, NzButtonModule, FormsModule, NzAlertModule, RouterLink],
   templateUrl: './analyzer.html',
   styleUrl: './analyzer.css',
   animations: [

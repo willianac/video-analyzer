@@ -23,7 +23,7 @@
       <small style="color: red;"><strong>Cole aqui um vídeo para obter o resumo</strong></small>
     }
     <div class="actions">
-      <button nz-button nzType="primary" nzGhost="" nzShape="round" nzSize="large" [disabled]="loading">Voltar</button>
+      <button nz-button nzType="primary" nzGhost="" nzShape="round" nzSize="large" routerLink="/" [disabled]="loading">Voltar</button>
       <button nz-button nzType="primary" nzShape="round" nzSize="large" [nzLoading]="loading" (click)="getSummary()">Gerar resumo</button>
     </div>
   </div>
