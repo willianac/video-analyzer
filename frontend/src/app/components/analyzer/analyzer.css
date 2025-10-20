@@ -28,3 +28,27 @@
 .result, .summary-error {
   padding: 1rem;
 }
+
+@media screen and (max-width: 768px) {
+  .main {
+    width: 95%;
+    height: 95vh;
+  }
+
+  .header {
+    margin-bottom: 0.4rem;
+  }
+
+  .examples-label {
+    margin-top: 2rem;
+  }
+
+  .info {
+    flex-direction: column;
+    row-gap: 1rem;
+  }
+
+  .actions button {
+    flex: 1;
+  }
+}
