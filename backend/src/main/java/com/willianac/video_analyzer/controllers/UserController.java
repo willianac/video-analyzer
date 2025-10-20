@@ -45,7 +45,7 @@ public class UserController {
 
     @CrossOrigin(origins = "*")
     @GetMapping("/summaries")
-    public ResponseEntity<?> getUserSummaries(@RequestParam Long userId, @RequestParam String videoId) {
+    public ResponseEntity<?> getUserSummaries(@RequestParam Long userId) {
         try {
             User user = userRepository.findById(userId).orElse(null);
             if (user == null) {
