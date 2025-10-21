@@ -3,11 +3,12 @@ import { Component, inject } from '@angular/core';
 import { fadeIn } from '@ngverse/motion/animatecss';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { Summary } from '../../services/summary';
+import { SummaryService } from '../../services/summary';
 import { FormsModule } from '@angular/forms';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { Session } from '../../services/session';
 import { RouterLink } from '@angular/router';
+import { EMPTY, mergeMap } from 'rxjs';
 
 @Component({
   selector: 'app-analyzer',
@@ -21,7 +22,7 @@ import { RouterLink } from '@angular/router';
   ]
 })
 export class Analyzer {
-  summaryService = inject(Summary);
+  summaryService = inject(SummaryService);
   sessionService = inject(Session);
   currentUser = this.sessionService.getCurrentUser();
   loading = false;
@@ -51,18 +52,23 @@ export class Analyzer {
       return this.invalidVideoIdErr = "ID/URL de vídeo inválido. Por favor, insira um ID ou URL de vídeo do YouTube válido."
     }
 
-    if(this.sessionService.get("lastVideoSummarized") === videoId) {
-      this.loading = false;
-      return this.sameSummaryRequestErr = "Você já pediu o resumo desse vídeo. Por favor, insira outro vídeo."
-    }
-
     this.loading = true
 
-    return this.summaryService.getSummary(videoId, this.currentUser.id).subscribe({
+    return this.summaryService.getUserSummaries(this.currentUser.id).pipe(
+      mergeMap(res => {
+        const hasSummaryAlready = res.find((summary) => summary.videoId === videoId);
+        if(hasSummaryAlready) {
+          this.loading = false;
+          this.sameSummaryRequestErr = "Você já pediu o resumo desse vídeo. Por favor, insira outro vídeo. Clique aqui"
+          return EMPTY
+        }
+        return this.summaryService.getSummary(videoId, this.currentUser.id);
+      })
+
+    ).subscribe({
       next: (res) => {
         this.summary = res
         this.loading = false;
-        this.sessionService.set("lastVideoSummarized", this.videoString);
       },
       error: (err) => {
         this.loading = false;
