@@ -12,7 +12,7 @@ export type User = {
 })
 export class Auth {
     private httpClient = inject(HttpClient);
-    private url = "http://localhost:8080";
+    private url = import.meta.env.NG_APP_API_URL as string;
 
     public signIn(name: string): Observable<User> {
         return this.httpClient.post<User>(this.url + "/users/signin", { name }).pipe(

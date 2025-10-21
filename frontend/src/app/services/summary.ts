@@ -8,16 +8,17 @@ import { Summary } from '../core/types/summary';
 })
 export class SummaryService {
   private http = inject(HttpClient)
+  private url = import.meta.env.NG_APP_API_URL as string;
 
   public getSummary(videoId: string, userId: number): Observable<string> {
-    const url = `http://localhost:8080/video-info/summary?videoId=${videoId}&userId=${userId}`;
+    const url = `${this.url}/video-info/summary?videoId=${videoId}&userId=${userId}`;
     return this.http.get(url, { responseType: "text" }).pipe(
       timeout(50000)
     )
   }
 
   public getUserSummaries(userId: number): Observable<Summary[]> {
-    const url = `http://localhost:8080/users/summaries?userId=${userId}`;
+    const url = `${this.url}/users/summaries?userId=${userId}`;
     return this.http.get<Summary[]>(url);
   }
 }
