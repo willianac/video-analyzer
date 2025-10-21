@@ -6,6 +6,7 @@
 /frontend/out-tsc
 /frontend/bazel-out
 /frontend/.angular
+/frontend/.env
 
 # Node
 /frontend/node_modules
