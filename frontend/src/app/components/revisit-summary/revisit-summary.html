@@ -1,0 +1,10 @@
+<div class="glass-box main">
+    <h2>Resumo do vídeo de ID: <strong>{{summary?.videoId}}</strong> </h2>
+    <p class="text-muted">Requisitado por <span class="primary-color">{{summary?.user?.name}}</span></p>
+
+    <div class="glass-box summary">
+        {{summary?.summary}}
+    </div>
+
+    <button nz-button nzShape="round" nzType="primary" nzGhost routerLink="/analyzer" class="go-back">Voltar</button>
+</div>

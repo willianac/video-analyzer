@@ -40,9 +40,9 @@
     </div>
   }
 
-  @if (this.sameSummaryRequestErr) {
+  @if (this.showSameSummaryRequestErr) {
     <div class="summary-error glass-box">
-      <p style="color: red">{{sameSummaryRequestErr}}</p>
+      <p style="color: red">Você já pediu o resumo desse vídeo. Por favor, insira outro vídeo. <a (click)="revisitSummary()">Clique aqui para visualizar</a></p>
     </div>
   }
 

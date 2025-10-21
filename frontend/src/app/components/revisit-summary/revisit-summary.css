@@ -1,0 +1,28 @@
+.main {
+  width: 1000px;
+  padding: 2rem;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.summary {
+    margin-top: 2rem;
+    padding: 1rem;
+}
+
+.go-back {
+    margin-top: 1rem;
+    width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+    .main {
+        width: 95%;
+        height: 95vh;
+    }
+
+    .go-back {
+        margin-top: auto;
+    }
+}

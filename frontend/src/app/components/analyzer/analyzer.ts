@@ -7,8 +7,9 @@ import { SummaryService } from '../../services/summary';
 import { FormsModule } from '@angular/forms';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { Session } from '../../services/session';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { EMPTY, mergeMap } from 'rxjs';
+import { Summary } from '../../core/types/summary';
 
 @Component({
   selector: 'app-analyzer',
@@ -24,20 +25,22 @@ import { EMPTY, mergeMap } from 'rxjs';
 export class Analyzer {
   summaryService = inject(SummaryService);
   sessionService = inject(Session);
+  router = inject(Router);
   currentUser = this.sessionService.getCurrentUser();
   loading = false;
   videoString = "";
   summary = "";
 
   summaryRequestErr = "";
-  sameSummaryRequestErr = "";
   invalidVideoIdErr = "";
-
+  
+  showSameSummaryRequestErr = false;
   showBlankInputErr = false;
+  summaryToRevisit: Summary | null = null;
 
   public getSummary() {
     this.showBlankInputErr = false;
-    this.sameSummaryRequestErr = "";
+    this.showSameSummaryRequestErr = false;
     this.invalidVideoIdErr = "";
     this.summaryRequestErr = "";
 
@@ -59,7 +62,8 @@ export class Analyzer {
         const hasSummaryAlready = res.find((summary) => summary.videoId === videoId);
         if(hasSummaryAlready) {
           this.loading = false;
-          this.sameSummaryRequestErr = "Você já pediu o resumo desse vídeo. Por favor, insira outro vídeo. Clique aqui"
+          this.summaryToRevisit = hasSummaryAlready;
+          this.showSameSummaryRequestErr = true;
           return EMPTY
         }
         return this.summaryService.getSummary(videoId, this.currentUser.id);
@@ -67,14 +71,20 @@ export class Analyzer {
 
     ).subscribe({
       next: (res) => {
-        this.summary = res
+        this.summary = res;
         this.loading = false;
       },
       error: (err) => {
         this.loading = false;
-        this.handleErrors(err)
+        this.handleErrors(err);
       }
     })
+  }
+
+  public revisitSummary() {
+    if(this.summaryToRevisit)  {
+      this.router.navigate(["/summary"], { state: { summary: this.summaryToRevisit } });
+    }
   }
 
   private testAndReturnVideoId(videoString: string) {
