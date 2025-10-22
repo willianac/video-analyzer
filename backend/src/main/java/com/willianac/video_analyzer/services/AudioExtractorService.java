@@ -12,8 +12,7 @@ import com.willianac.video_analyzer.exceptions.SummaryException;
 @Service
 public class AudioExtractorService {
     public void extractAudio(String videoPath, String audioPath) throws Exception {
-        try {
-            FFmpegFrameGrabber frameGrabber = new FFmpegFrameGrabber(videoPath);
+        try (FFmpegFrameGrabber frameGrabber = new FFmpegFrameGrabber(videoPath)) {
             frameGrabber.setFormat("mp4"); // Optional; can be removed if auto-detection works
             frameGrabber.start();
 
@@ -22,20 +21,18 @@ public class AudioExtractorService {
                 throw new RuntimeException("No audio channels found in input file!");
             }
 
-            FFmpegFrameRecorder frameRecorder = new FFmpegFrameRecorder(audioPath, audioChannels);
-            frameRecorder.setSampleRate(frameGrabber.getSampleRate());
-            frameRecorder.setAudioCodec(avcodec.AV_CODEC_ID_MP3); // mp3 format
-            frameRecorder.setFormat("mp3");
-            frameRecorder.start();
+            try (FFmpegFrameRecorder frameRecorder = new FFmpegFrameRecorder(audioPath, audioChannels)) {
+                frameRecorder.setSampleRate(frameGrabber.getSampleRate());
+                frameRecorder.setAudioCodec(avcodec.AV_CODEC_ID_MP3); // mp3 format
+                frameRecorder.setFormat("mp3");
+                frameRecorder.start();
 
-            Frame frame;
-            while ((frame = frameGrabber.grabSamples()) != null) {
-                frameRecorder.record(frame);
-            }
-
-            frameRecorder.stop();
-            frameGrabber.stop();
-
+                Frame frame;
+                while ((frame = frameGrabber.grabSamples()) != null) {
+                    frameRecorder.record(frame);
+                }
+                
+            };
         } catch (Exception e) {
             System.out.println(e.getMessage());
             throw new SummaryException(SummaryErrorsEnum.EXTRACT_AUDIO_FAILED);
