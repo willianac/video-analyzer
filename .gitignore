@@ -50,7 +50,6 @@ target/
 !**/backend/src/main/**/target/
 !**/backend/src/test/**/target/
 backend/my_videos/
-backend/src/main/resources/application.properties
 
 ### STS ###
 .apt_generated
@@ -60,3 +59,6 @@ backend/src/main/resources/application.properties
 .settings
 .springBeans
 .sts4-cache
+
+.env
+/credentials/*.json

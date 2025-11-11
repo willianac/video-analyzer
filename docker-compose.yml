@@ -1,0 +1,37 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      args: 
+        NG_APP_API_URL: "http://localhost:8080"
+    ports:
+      - "4200:4200"
+
+  api:
+    build: ./backend
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: ./credentials/{nome-do-arquivo}.json
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+    ports:
+    - "8080:8080"
+    depends_on:
+      - mysql
+    volumes:
+      - ./credentials:/app/credentials
+
+  mysql:
+    image: mysql:8.0
+    container_name: myapp-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: VideoAnalyzer
+      MYSQL_USER: will
+      MYSQL_PASSWORD: will2009
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
