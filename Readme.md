@@ -1,5 +1,5 @@
 <h1 align="center">
-Stanced
+Video Analyzer
 </h1>
 <p align="center">
 Gerador de resumos de vídeos do YouTube
