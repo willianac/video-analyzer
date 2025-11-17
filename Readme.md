@@ -2,10 +2,8 @@
 Stanced
 </h1>
 <p align="center">
-Compartilhe fotos e tunings dos seus carros favoritos 🚘
-</p>
-
 Gerador de resumos de vídeos do YouTube
+</p>
 
 ## 🛠️ Criado com:
 
